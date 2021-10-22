@@ -1,14 +1,52 @@
+{% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <h2>Login</h2>
+  </div>
+</div>
 
-{% block content %}
-<h1>Login</h1>
-<h2>{{error}}</h2>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    {% if error %}
+    <div class="alert alert-danger">{{error}}</div>
+    {% endif %}
 
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="fomr-group">
+        <label for="username">User Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          id="username"
+          required
+        />
+      </div>
+
+      <div class="fomr-group">
+        <label for="password1">Password</label>
+        <input
+          required
+          type="password"
+          class="form-control"
+          name="password"
+          id="password"
+        />
+      </div>
+
+      <br />
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+    <hr />
+
+    <div class="text-center">
+      Need an account? <a href="{% url 'signupuser' %}">Sign up here</a>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

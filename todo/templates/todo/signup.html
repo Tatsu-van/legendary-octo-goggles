@@ -2,12 +2,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Sign up</h1>
 
-{{error}}
-<form method="POST">
-  {% csrf_token %} 
-  {{form.as_p}}
-  <button>Submit</button>
-</form>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <h2>Sign Up</h2>
+  </div>
+</div>
+
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    {% if error %}
+      <div class="alert alert-danger">
+        {{error}}
+      </div>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %} 
+
+      <div class="fomr-group">
+        <label for="username">User Name</label>
+        <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp" required>
+        <small class="form-text text-muted" id="usernameHelp">Your username must be unique.</small>
+      </div>
+
+      <div class="fomr-group">
+        <label for="password1">Password</label>
+        <input required type="password" class="form-control" name="password1" id="password1">
+      </div>
+
+      <div class="fomr-group">
+        <label for="password21">Confirm Password</label>
+        <input required type="password" class="form-control" name="password2" id="password2">
+      </div>
+
+      <br>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+
+    <hr>
+    
+    <div class="text-center">
+      Already have an account? <a href="{% url 'loginuser' %}">Login here</a>
+
+    </div>
+  </div>
+</div>
+
+
+
+
 {% endblock %}

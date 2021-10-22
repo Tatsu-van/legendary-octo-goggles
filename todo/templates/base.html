@@ -7,11 +7,19 @@
   <title>Todo</title>
 </head>
 <body>
-  logged in as {{ user.username }}
-  <form method="POST" action="{% url 'logoutuser' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-  </form>
+
+{% if user.is_authenticated %}
+
+    logged in as {{ user.username }}
+    <form method="POST" action="{% url 'logoutuser' %}">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+
+{% else %}
+    <a href="/signup">Sign up</a> &nbsp;&nbsp;
+    <a href="/login">Login</a>
+{% endif %}
   
   {% block content %}
 

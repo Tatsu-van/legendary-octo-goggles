@@ -1,15 +1,18 @@
-{{% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
 <h1>Completed Todos</h1>
 
-<h3>{{todo.title}}</h3>
-<form method="POST">
-  {% csrf_token %}
-  {{form}}
-  <button type="submit">Save</button>
-</form>
+{{todolist}}
 
+{% for todo in todos %}
+    
+<div>
+  <p>{{todo.id}}</p>
+    <a href="{%  url 'viewtodo' todo.id  %}">{{todo.title}}</a>
+</div>
+
+{% endfor %}
 
 {% endblock %}

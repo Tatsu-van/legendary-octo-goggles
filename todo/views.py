@@ -1,9 +1,13 @@
+import django
 from django.http import request
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, authenticate
 from django.db import IntegrityError
+from django.utils import timezone
+
+import todo
 from .forms import TodoForm
 from .models import Todo
 
@@ -73,9 +77,9 @@ def loginuser(request):
             login(request, user)
             return redirect('currenttodos')
 
-
+# Todos
 def currenttodos(request):
-    todos = Todo.objects.filter(user=request.user)
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
     return render(request, 'todo/currenttodos.html', { 'todos': todos })
 
 def createtodo(request):
@@ -101,7 +105,7 @@ def createtodo(request):
 def viewtodo(request, todo_id):
     todo = get_object_or_404(Todo, pk=todo_id, user=request.user)
     if request.method == 'GET':
-        form = TodoForm(request.POST)
+        form = TodoForm(request.POST, instance=todo) #####
         return render(
             request,
             'todo/viewtodo.html',
@@ -110,6 +114,43 @@ def viewtodo(request, todo_id):
                 'form': form,
             }
         )
+    else:
+        try:
+            form = TodoForm(request.POST, instance=todo) ####
+            form.save()
+            return redirect('currenttodos')
+        except ValueError:
+            return render(
+                request,
+                'todo/viewtodo.html',
+                {
+                    'todo': todo,
+                    'form': form,
+                    'error': 'Bad infomation...'
+                }
+            )
 
 def completedtodos(request):
-    return render(request, 'todo/completedtodos.html')
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False)
+    return render(
+        request,
+        'todo/completedtodos.html',
+        {
+            'todos': todos
+        }
+    )
+
+
+def completetodo(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id, user=request.user)
+    if request.method == 'POST':
+        todo.datecompleted = timezone.now()
+        todo.save()
+        return redirect('currenttodos')
+
+
+def deletetodo(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id, user=request.user)
+    if request.method == 'POST':
+        todo.delete()
+        return redirect('currenttodos')

@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-<h1>Welcome to Todos</h1>
+
+<div class="row justify-content-center mt-5">
+  <div class="col-md-7 text-center">
+    <img src="{% static 'gif01.gif' %}" width="400" height="400" alt="" class="d-inline-block aline-top">
+
+    <br><br>
+
+    <h1>Welcome to TodoList</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus odit a consectetur qui modi porro id reprehenderit veritatis omnis corporis?</p>
+
+    <a href="{% url 'signupuser' %}" class="btn btn-primary btn-lg">Start</a>
+  </div>
+</div>
+
 
 {% endblock %}

@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <h1>Current Todo List</h1>
+
+<ul>
+    {% for todo in todos %}
+    
+        <div>
+          <p>{{todo.id}}</p>
+            <a href="{%  url 'viewtodo' todo.id  %}">{{todo.title}}</a>
+        </div>
+    
+    {% endfor %}
+</ul>
+
 
 {% endblock %}

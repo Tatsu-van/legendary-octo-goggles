@@ -1,5 +1,5 @@
 from django.http import request
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, authenticate
@@ -75,10 +75,8 @@ def loginuser(request):
 
 
 def currenttodos(request):
-    return render(
-        request,
-        'todo/currenttodos.html',
-        ) 
+    todos = Todo.objects.filter(user=request.user)
+    return render(request, 'todo/currenttodos.html', { 'todos': todos })
 
 def createtodo(request):
     if request.method == 'GET':
@@ -99,3 +97,19 @@ def createtodo(request):
                     'error': 'Bad data passed in. Try again'
                 }
             )
+
+def viewtodo(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id, user=request.user)
+    if request.method == 'GET':
+        form = TodoForm(request.POST)
+        return render(
+            request,
+            'todo/viewtodo.html',
+            {
+                'todo': todo,
+                'form': form,
+            }
+        )
+
+def completedtodos(request):
+    return render(request, 'todo/completedtodos.html')

@@ -1,13 +1,15 @@
-{% extends 'base.html' %}
+{{% extends 'base.html' %}
 
 {% block content %}
 
-<h1>New Todo</h1>
-<h2>{{error}}</h2>
+<h1>Completed Todos</h1>
+
+<h3>{{todo.title}}</h3>
 <form method="POST">
   {% csrf_token %}
-  {{form.as_p}}
+  {{form}}
   <button type="submit">Save</button>
 </form>
+
 
 {% endblock %}
